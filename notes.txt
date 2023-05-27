@@ -1,0 +1,7 @@
+socket.on
+socket.emit
+
+
+room ki id => sender ki id
+receiver ki id => uuid function output
+sender and receiver both will be in same room
