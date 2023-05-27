@@ -22,6 +22,7 @@ io.on('connection', (socket)=>{
     // if(socketList.length < 2){
         socket.on('message',(socket)=>{
             console.log(`Message: ${socket.message}`);
+            io.emit('message',socket.message);
         })
         
         // socket.on('join-room', (data) => {
@@ -51,6 +52,10 @@ io.on('connection', (socket)=>{
         //     console.log(socketList)
         //     io.to(socketList[0]).emit('init', {data: "Initiate the process"});
         // })
+
+        socket.on('send-file',(data)=>{
+            io.emit('receive-file',data);
+        });
     
         socket.on('disconnect', ()=>{
             console.log(socket.id + " Disconnected..")

@@ -17,3 +17,21 @@ console.log(roomCode);
 const senderSocketID = generateUUID()
 console.log(senderSocketID)
 socket.emit('create-room', {roomCode, senderSocketID});
+
+const send = () =>{
+    const message = document.getElementById('message').value;
+    socket.emit('message',{message});
+};
+
+const sendFile = () =>{
+    const fileInput = document.getElementById('file');
+    const file = fileInput.files[0];
+    if (file) {
+        console.log(file);
+        socket.emit('send-file', {file});
+    }
+    else{
+        alert('Please select a file');
+    }
+
+}

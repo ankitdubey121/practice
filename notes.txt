@@ -5,3 +5,16 @@ socket.emit
 room ki id => sender ki id
 receiver ki id => uuid function output
 sender and receiver both will be in same room
+
+
+*sender to receiver
+
+sender  =>              server              =>   receiver
+.emit(event)    .on(event) & .emit(event)           .on(message) and display
+
+
+
+///CURRENT ERROR
+
+createObjectURL' on 'URL': Overload resolution failed.
+ 
