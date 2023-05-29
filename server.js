@@ -7,8 +7,6 @@ const io = require('socket.io')(http);
 
 app.use(express.static(path.join(__dirname+"/public")));
 
-const connectedClients = {}
-
 app.get('/receiver', (req, res)=>{
 	res.sendFile(__dirname+'/public/receiver.html');
 });
@@ -34,14 +32,17 @@ io.on('connection', (socket)=>{
         // });
 
         socket.on('create-room', (data) =>{
-            console.log(`Room created Room ID : ${data.roomCode}`)
-            socket.join(data.roomCode);
-            console.log(`${data.senderSocketID} has joined the room`);
+            console.log(`Room created Room ID : ${data.senderSocket}`)
+            // created and joined the same room
+            socket.join(data.senderSocket);
         })
         
         socket.on('join-room', (data) => {
-                socket.join(data.roomCode)
+            // Joined the room created by the senderSocket
+                socket.join(data.senderSocket)
                 console.log(`${data.receiverID} joined the room`);
+                // emitting an event to senderSocket
+                io.to(data.senderSocket).emit("init");
         })
 
         // socket.on('sender-ready', (data)=>{
@@ -59,7 +60,7 @@ io.on('connection', (socket)=>{
     
         socket.on('disconnect', ()=>{
             console.log(socket.id + " Disconnected..")
-            delete connectedClients[socket.id]
+            socket.leave()
         })
     // }
     

@@ -1,20 +1,18 @@
 socket.on
 socket.emit
 
+Sender will create the room
+Receiver will join the room
+When Receiver will emit an event it will also send the joinID aka Sender's ID  with it
+This sender id will be used by server to emit event to the specific member in the room
 
-room ki id => sender ki id
-receiver ki id => uuid function output
-sender and receiver both will be in same room
-
+*senderSocketID is the roomCode
 
 *sender to receiver
 
 sender  =>              server              =>   receiver
-.emit(event)    .on(event) & .emit(event)           .on(message) and display
+.emit(event)    .on(event) & in(senderID)           .on(message) and display
 
 
 
-///CURRENT ERROR
-
-createObjectURL' on 'URL': Overload resolution failed.
  

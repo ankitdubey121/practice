@@ -1,6 +1,5 @@
 const socket = io('http://localhost:3000')
 
-const roomCode = document.getElementById('roomCode').value
 function generateUUID() {
     var code = '';
     for (var i = 0; i < 3; i++) {
@@ -19,7 +18,8 @@ const joinBtn = document.getElementById('joinBtn')
 
 
 joinBtn.addEventListener('click', ()=>{
-    socket.emit('join-room', {roomCode, receiverID});
+    let senderSocket = document.getElementById('roomCode').value
+    socket.emit('join-room', {senderSocket, receiverID});
 })
 
 socket.on('message',(data)=>{
