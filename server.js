@@ -1,72 +1,67 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const path = require('path')
-const http = require('http').Server(app);
+const path = require("path");
+const http = require("http").Server(app);
+const io = require("socket.io")(http);
 
-const io = require('socket.io')(http);
+let socketsJoinedRoom = [];
 
-app.use(express.static(path.join(__dirname+"/public")));
+app.use(express.static(path.join(__dirname + "/public")));
 
-app.get('/receiver', (req, res)=>{
-	res.sendFile(__dirname+'/public/receiver.html');
+app.get("/receiver", (req, res) => {
+  res.sendFile(__dirname + "/public/receiver.html");
 });
 
-app.get('/',(req,res)=>{
-    res.sendFile(__dirname+'/index.html');
-})
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
 
+io.on("connection", (socket) => {
+  socket.on("create-room", (data) => {
+    console.log(`Room created Room ID : ${data.senderID}`);
+    // created and joined the same room
+    socket.join(data.senderID);
+    socketsJoinedRoom.push(data.senderID);
+  });
 
-io.on('connection', (socket)=>{
-    // if(socketList.length < 2){
-        socket.on('message',(socket)=>{
-            console.log(`Message: ${socket.message}`);
-            io.emit('message',socket.message);
-        })
-        
-        // socket.on('join-room', (data) => {
-        //     socket.join(data.roomName);
-        //     console.log(`${data.socketID} joined room ${data.roomName}`);
-        //     socketList.push(data.socketID)
-        //     console.log(socketList)
-        //     io.to(data.roomName).emit('say-hello')
-        // });
+  socket.on("join-room", (data) => {
+    // Joined the room created by the senderID
+    socket.join(data.senderID);
+    console.log(`${data.receiverID} joined the room`);
+    socketsJoinedRoom.push(data.receiverID);
+    console.log(socketsJoinedRoom);
+    socket.in(data.senderID).emit("init", data.receiverID);
+    const numSocketsInRoom = io.sockets.adapter.rooms.get(data.senderID).size;
+    console.log(
+      `Number of sockets in room ${data.senderID}: ${numSocketsInRoom}`
+    );
+    const socketsInRoom = io.sockets.adapter.rooms.get(data.senderID);
 
-        socket.on('create-room', (data) =>{
-            console.log(`Room created Room ID : ${data.senderSocket}`)
-            // created and joined the same room
-            socket.join(data.senderSocket);
-        })
-        
-        socket.on('join-room', (data) => {
-            // Joined the room created by the senderSocket
-                socket.join(data.senderSocket)
-                console.log(`${data.receiverID} joined the room`);
-                // emitting an event to senderSocket
-                io.to(data.senderSocket).emit("init");
-        })
+    // Get the socket IDs of all sockets in the room
+    const socketIDs = [];
+    socketsInRoom.forEach((socket, socketID) => {
+      socketIDs.push(socketID);
+    });
 
-        // socket.on('sender-ready', (data)=>{
-        //     console.log(data.data)
-        //     if(socketList.includes(data.socketId)){
-        //         socketList.pop(data.socketId)
-        //     }
-        //     console.log(socketList)
-        //     io.to(socketList[0]).emit('init', {data: "Initiate the process"});
-        // })
+    console.log(`Socket IDs in room ${data.senderID}:`, socketIDs);
+  });
 
-        socket.on('send-file',(data)=>{
-            io.emit('receive-file',data);
-        });
-    
-        socket.on('disconnect', ()=>{
-            console.log(socket.id + " Disconnected..")
-            socket.leave()
-        })
-    // }
-    
-    
-})
+  socket.on("file-upload", (data) => {
+    console.log(data);
+    io.to(data.receiverID).emit("file-receive", data.file);
+  });
 
-http.listen(3000,()=>{
-    console.log('Server is running on port 3000');
+  socket.on("send-file", (data) => {
+    io.emit("receive-file", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(socket.id + " Disconnected..");
+    socketsJoinedRoom.length = 0;
+    // socket.leave()
+  });
+});
+
+http.listen(3000, () => {
+  console.log("Server is running on port 3000");
 });

@@ -18,32 +18,6 @@ const joinBtn = document.getElementById('joinBtn')
 
 
 joinBtn.addEventListener('click', ()=>{
-    let senderSocket = document.getElementById('roomCode').value
-    socket.emit('join-room', {senderSocket, receiverID});
+    let senderID = document.getElementById('roomCode').value
+    socket.emit('join-room', {senderID, receiverID});
 })
-
-socket.on('message',(data)=>{
-    const text = document.getElementById('sent-text');
-    text.innerHTML = data;
-    console.log(data);
-});
-
-socket.on('receive-file',(data)=>{
-    console.log('***RECEIVED FILE*** :'+data);
-    downloadFile(data);
-});
-
-
-function downloadFile(fileObj) {
-    const file = fileObj; // Your file object
-
-  const downloadLink = document.getElementById('downloadLink');
-  const url = window.URL.createObjectURL(file);
-
-  downloadLink.href = url;
-  downloadLink.download = file.name;
-
-  downloadLink.click();
-
-  window.URL.revokeObjectURL(url);
-  }
