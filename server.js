@@ -42,8 +42,8 @@ io.on("connection", (socket) => {
     // created and joined the same room
     socket.join(data.senderID);
     roomCode = data.senderID;
-    io.to(socket.id).emit('room-created', roomCode)
-  });
+    io.to(socket.id).emit('room-created', roomCode);
+});
 
   socket.on("join-room", (data) => {
     // Joined the room created by the senderID
@@ -74,10 +74,6 @@ io.on("connection", (socket) => {
   socket.on("file-upload", (data) => {
     console.log(data);
     socket.in(roomCode).emit("file-receive", data.file);
-  });
-
-  socket.on("send-file", (data) => {
-    io.emit("receive-file", data);
   });
 
   socket.on("disconnect", () => {

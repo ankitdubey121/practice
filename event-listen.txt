@@ -1,0 +1,37 @@
+Sender emits
+-create room [generated Sender ID]
+
+Sender listens
+-init {logs init presence and receiver id recieved in `data` object}
+-room created {adds h2 element to show room code as data object}
+
+=====================================================================
+
+Receiver listens
+-connect {assigns receiver id}
+-wrong-code {alerts for wrong code}
+-not-allowed {alerts for Max Limit Reached}
+-file-transfer {creation of blob object and download procedure}
+
+Receiver emits
+-join-room [emits sender and receiver id]
+
+=====================================================================
+
+Server Listens
+-connection => create-room {receives sender ID and makes it join room,
+		emitting room code to sender}
+
+-join-room {
+	-checkForRoomCode => assignment of member size
+	-checkForLimit => emit not-allowed event
+	-emission of init event for receiver
+	-joining of receiver
+	-logging of receiverID
+	-storing socketIDs in array and logged
+	-emission of room code not matched event
+}
+
+-file-upload {emission of file-receive event with file data in the room}
+
+-disconnect

@@ -14,7 +14,6 @@ function generateUUID() {
 receiverID = ''
 
 
-
 const joinBtn = document.getElementById('joinBtn')
 
 
@@ -27,12 +26,13 @@ joinBtn.addEventListener('click', ()=>{
 })
 
 socket.on('wrong-code', ()=>{
-    alert('Wrong code')   
+    alert('Wrong code');   
 })
 
 socket.on('not-allowed', ()=>{
     alert("Maximum limit reached. Can't join")
 })
+
 socket.on('file-transfer', (fileData) => {
   // Create a Blob object from the file data received
   const blob = new Blob([fileData]);
