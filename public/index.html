@@ -1,24 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js" integrity="sha512-xbQU0+iHqhVt7VIXi6vBJKPh3IQBF5B84sSHdjKiSccyX/1ZI7Vnkt2/8y8uruj63/DVmCxfUNohPNruthTEQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>BitSync</title>
 </head>
 <body>
-    <!-- <div class='typebox'>
-        <input type="text" id="message" placeholder="Type a message">
-        <button onclick="send()">Send</button>
-    </div> -->
+  
+<div id="menu-icon">&#9776;</div>
 
-    <div class="filebox">
-        <input type="file" name="file" id='file-input'>
-        <button id="send-btn">Send File</button>
-    </div>
-    <p id="wrong-code"></p>
-    <script src="sender.js"></script>
+<nav class="navbar">
+
+  
+
+<div class="logo">Bit<span id="dif">S</span>ync </div>
+
+<ul class="navbar-menu">
+  <li><a href="index.html">HOME</a></li>
+  <li><a href="#">ABOUT</a></li>
+  <li><a href="#">FEATURES</a></li>
+  <li><a href="#">CONTACT</a></li>
+</ul>
+
+</nav>
+
+
+<div id="mySidenav" class="sidenav">
+  <div class="logo">Bit<span id="dif">S</span>ync </div>
+  <a href="#" class="closebtn">&times;</a>
+  <a href="index.html">Home</a>
+  <a href="#">About</a>
+  <a href="#">Features</a>
+  <a href="#">Contact</a>
+</div>
+
+
+
+<div class="main">
+
+  <div class="heading">Peer to Peer File Sharing Made Easy</div>
+
+  <div class="subheading">Share and Synchronize files effortlessly with BitSync. No Login Required. Hassle free and secure.</div>
+
+
+
+  <ul class="mainfeatures">
+    <li ><a href="sender.html" id="blue">I'm a Sender</a></li>
+    <li ><a href="receiver.html" id="black">I'm a Receiver</a></li>
+   
+  </ul>
+
+
+  <img id="main-img" src="images/image1.PNG" alt="image">
+
+</div>
+
+
+
+<div class="footer">
+
+
+  <div class="info">@2023 BitSync. All rights reserved.</div>
+
+  <ul class="footer-menu">
+    <li><a href="#">Terms Of Service</a></li>
+    <li><a href="#">Privacy Policy</a></li>
+    <li><a href="#">Contact us</a></li>
+  </ul>
+
+
+</div>
+
+
+
+
+
+<script src="script.js"></script>
 </body>
-
 </html>
